@@ -62,6 +62,21 @@ def transform_masked(img):
     return pcv.apply_mask(img=img, mask=mask, mask_color='white')
 
 
+def transform_roi(img, dst='.'):
+    """
+    Finds ROI objects on the img and generates a representation of them
+    Arguments:
+        img (np.ndarray): Array representing the image
+        dst (str): Destination directory for the temporary files
+    Returns:
+        A np.ndarray representing the transformed image
+    """
+    mask = mask_image(img)
+    colorized_mask = pcv.visualize.colorize_masks(masks=[mask], colors=['green'])
+    merged_image = pcv.visualize.overlay_two_imgs(colorized_mask, img, alpha=0.3)
+    return merged_image
+
+
 def transform_analysis(img):
     """
     Generates a representation of the analysis of the image
@@ -71,11 +86,8 @@ def transform_analysis(img):
         A np.ndarray representing the transformed image
     """
     mask = mask_image(img)
-    objects, object_hierarchy = pcv.find_objects(img, mask)
-    obj, mask = pcv.object_composition(img=img,
-                                       contours=objects,
-                                       hierarchy=object_hierarchy)
-    return pcv.analyze_object(img, obj, mask)
+    shape_image = pcv.analyze.size(img=img, labeled_mask=mask, n_labels=1)
+    return shape_image
 
 
 def transform_pseudolandmarks(img, dst='.'):
@@ -89,30 +101,13 @@ def transform_pseudolandmarks(img, dst='.'):
     """
     pcv.params.debug_outdir = dst
     mask = mask_image(img)
-    objects, object_hierarchy = pcv.find_objects(img, mask)
-    obj, mask = pcv.object_composition(img=img,
-                                       contours=objects,
-                                       hierarchy=object_hierarchy)
     pcv.params.debug = 'print'
-    pcv.y_axis_pseudolandmarks(img=img, obj=obj, mask=mask, label="default")
+    pcv.homology.y_axis_pseudolandmarks(img=img, mask=mask)
     pcv.params.debug = 'None'
     pseudolandmarks_file = find("*_pseudolandmarks.png", dst)
     transformed_img, path, filename = pcv.readimage(pseudolandmarks_file)
     os.remove(pseudolandmarks_file)
     return transformed_img
-
-
-def transform_colors(img):
-    """
-    Generates a representation of the color channels of the image
-    Arguments:
-        img (np.ndarray): Array representing the image
-    Returns:
-        A np.ndarray representing the transformed image
-    """
-    mask = mask_image(img)
-    return pcv.analyze_color(rgb_img=img, mask=mask,
-                             colorspaces='all', label="default")
 
 
 def transform_image(img_path: str, dst: str, type: str) -> None:
@@ -166,11 +161,6 @@ def transform_image(img_path: str, dst: str, type: str) -> None:
         pseudo_img = transform_pseudolandmarks(img, dst=dst)
         pcv.print_image(pseudo_img, new_image_prefix + "_PSEUDOLANDMARKS.JPG")
 
-    # Analyse colors channels
-    if type in ['colors']:
-        color_channels = transform_colors(img)
-        pcv.print_image(color_channels, new_image_prefix + "_COLORS.JPG")
-
 
 def transform_directory(src: str, dst: str, type: str) -> None:
     """
@@ -216,7 +206,6 @@ def plot_images(img_path: str, dst: str) -> None:
     roi_path = img_prefix + "_ROI_OBJECTS.JPG"
     analysis_path = img_prefix + "_ANALYZED.JPG"
     landmark_path = img_prefix + "_PSEUDOLANDMARKS.JPG"
-    colors_path = img_prefix + "_COLORS.JPG"
     blur_path = img_prefix + "_BLURRED.JPG"
 
     # Check existence of transformed files
@@ -238,8 +227,6 @@ def plot_images(img_path: str, dst: str) -> None:
     if os.path.isfile(landmark_path):
         img_marks, path, filename = pcv.readimage(landmark_path)
         image_names.append('Pseudolandmarks')
-    if os.path.isfile(colors_path):
-        img_colors, path, filename = pcv.readimage(colors_path)
     if os.path.isfile(blur_path):
         img_blur, path, filename = pcv.readimage(blur_path)
         image_names.append('Gaussian blur')
@@ -303,12 +290,6 @@ def plot_images(img_path: str, dst: str) -> None:
     plt.suptitle("Stored transformations of original image")
     plt.show()
 
-    # Display color analysis of image afterwards
-    if img_colors is not None:
-        plt.imshow(img_colors)
-        plt.title("Color histogram")
-        plt.show()
-
 
 @click.command()
 @click.option('--src', default=None, help='Directory of original data')
@@ -316,14 +297,14 @@ def plot_images(img_path: str, dst: str) -> None:
 @click.option('--type', default='all',
               help="Type of transformation requested, choose between"
                    + " ['all', 'blur', 'mask', 'roi', 'analysis', "
-                   + "'pseudolandmarks', 'colors', 'maskblur']")
+                   + "'pseudolandmarks', 'maskblur']")
 @click.option('--separate', default=True,
               help="Separation of transformations in different directories")
 @click.argument('file', required=False)
 def main(file, src, dst, type, separate) -> None:
     # Check if requested type is acceptable
     known_types = ['all', 'blur', 'mask', 'roi', 'analysis',
-                   'pseudolandmarks', 'colors', 'maskblur']
+                   'pseudolandmarks', 'maskblur']
     if type not in known_types:
         ctx = click.get_current_context()
         click.echo(ctx.get_help())
@@ -354,7 +335,6 @@ def main(file, src, dst, type, separate) -> None:
             if type == 'all':
                 known_types.remove('all')
                 known_types.remove('maskblur')
-                known_types.remove('colors')
                 for single_type in known_types:
                     transform_directory(src=src,
                                         dst=f"{dst}/{src}/{single_type}",

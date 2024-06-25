@@ -1,20 +1,26 @@
-# leaffliction
-42 project about identifying leaves
+# 42 Deep Learning Computer vision project: Leaffliction
 
-## CNN
-Following [this keras tutorial by Victor Zhou](https://victorzhou.com/blog/keras-cnn-tutorial/), we implemented a basic CNN with one Conv2D, one MaxPolling and some fully-connected layers before the softmax.<br>
-This CNN could easily be improved as we slightly overfit on some models. Adding a Drop layer should stop overfitting.<br>More layers (activation of ) will also improve accuracy but will take more time for training.<br><br>
-We chose not to go further for the CNN as we already reached the 90% accuracy needed to validate the project (94% with hard voting).
-## voting algorithms
-model1_pred = [0.9, 0.5, 0.002]<br>
-model2_pred = [0.1, 0.8, 0.003]<br>
-model3_pred = [0.1, 0.8, 0.003]
+This is a solo rework on a group project. The old version can be found here: https://github.com/thervieu/leaffliction
 
-### soft_vote
-avg for each class then pick best
-soft_vote_avg = [0.37, 0.7, 0.0027]
-soft_vote_pred = 1
+Why the rework ? Here are a few reasons:
+- A lot of improvements could be made to the code
+- I wanted to integrate a **fastAPI** interface to the project, which was not part of the assignment
+- Updates to **plantCV** made the library better, but those same updates completely broke our own implementation
 
-### hard_vote
-pick best out of all pred<br> 
-hard_vote_pred = 0
+## Overview
+
+The goal of the project is to use various tools to **analyse**, **augment**, and **classify** a dataset comprised of **plant leaf images**,
+using deep learning and computer vision techniques.
+
+The neural network model we chose to use was a **Convolutional Neural Network (CNN)**
+
+## Libraries used
+
+* The whole project was coded using python 3.11
+* **matplotlib** (*data visualisation, training comparison*)
+* **numpy** (*data structure*)
+* **opencv** (*computer vision library*)
+* **plantcv** (*plant-specialised computer vision library, based on OpenCV)
+* **tensorflow** and **keras** (*deep learning models*)
+* **click** (*program argument parser*)
+* **pillow** (*image manipulation*)

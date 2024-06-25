@@ -1,0 +1,6 @@
+images*
+leaves*.zip
+Apples*
+Grapes*
+__pycache__
+*.keras

@@ -86,9 +86,7 @@ def main(src, dst, type) -> None:
             known_types.remove('all')
             known_types.remove('maskblur')
             for single_type in known_types:
-                transform_directory(src=src,
-                                    dst=dst,
-                                    type=single_type)
+                transform_directory(src=src, dst=dst, type=single_type)
                 print(f"Finished applying {single_type}! Resulting images"
                         + f" can be found at {dst}\n")
         else:

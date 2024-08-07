@@ -52,7 +52,7 @@ def main(data):
     print(f'Starting model training...')
     model.fit(
         train_data,
-        epochs=5,
+        epochs=3,
         validation_data=validation_data,
         callbacks=[early_stopping, reduce_lr]
     )

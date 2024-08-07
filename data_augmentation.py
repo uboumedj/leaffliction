@@ -5,16 +5,11 @@ import cv2
 import imutils
 import filetype
 import numpy as np
-from datetime import datetime
+import click
 import matplotlib.pyplot as plt
+from datetime import datetime
 from PIL import Image, ImageEnhance
-
-
-def help() -> None:
-    """
-    Displays usage of this program
-    """
-    print("help:\n\tAugmentation.py [path_to_img]")
+from data_distribution import get_class_count
 
 
 def plot_images(img, f, r, c, b, s, p):
@@ -223,19 +218,44 @@ def augment(img_path: str, plot=True) -> None:
     if plot:
         plot_images(img, f, r, c, b, s, p)
 
-
-def main() -> None:
-    # set random seed
+@click.command()
+@click.option('--src', default=None, help='Path to the dataset in need of augmentation')
+@click.argument('file', required=False)
+def main(src, file) -> None:
     random.seed(datetime.now().timestamp())
-    # argument
-    if len(sys.argv) != 2:
-        return help()
-    if os.path.isfile(sys.argv[1]) is False:
-        return print("Argument {} does not exist".format(sys.argv[1]))
-    if (filetype.guess(sys.argv[1]) is None
-       or filetype.guess(sys.argv[1]).extension != 'jpg'):
-        return print("Argument {} is not a jpeg img".format(sys.argv[1]))
-    augment(sys.argv[1])
+    # Single file augmentation
+    if file is not None:
+        if os.path.isfile(file) is False:
+            return print(f"{file} does not exist or is not a file")
+        if (filetype.guess(file) is None
+           or filetype.guess(file).extension != 'jpg'):
+            return print(f"{file} is not a jpeg image")
+        augment(file)
+    # Directory augmentation
+    elif (src is not None):
+        class_count = get_class_count(src)
+        highest_class = max(class_count, key=lambda key: class_count[key])
+        max_count = class_count[highest_class]
+        class_count.pop(highest_class)
+        for key in class_count:
+            file_count = 0
+            augment_amount = int((max_count - class_count[key]) / 7)
+            image_list = os.listdir(os.path.join(src, key))
+            for i in range(augment_amount):
+                print(f"\rAugmenting {i+1}/{augment_amount} images from {key}...", end='', flush=True)
+                current_image = random.choice(image_list)
+                augment(os.path.join(src, key, current_image), plot=False)
+                image_list.remove(current_image)
+                file_count += 1
+            if file_count != 0:
+                print(" Done !")
+        print('All subdirectories augmented')
+    else:
+        ctx = click.get_current_context()
+        click.echo(ctx.get_help())
+        print("You must either provide a [src] directory, or a "
+              + "source file as arguments for the augmentation")
+        ctx.exit()
 
 
 if __name__ == "__main__":

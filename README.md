@@ -17,7 +17,7 @@ The neural network model we chose to use was a **Convolutional Neural Network (C
 ## Libraries used
 
 * The whole project was coded using python 3.11
-* **matplotlib** (*data visualisation, training comparison*)
+* **matplotlib** and **seaborn** (*data visualisation*)
 * **numpy** (*data structure*)
 * **opencv** (*computer vision library*)
 * **plantcv** (*plant-specialised computer vision library, based on OpenCV)

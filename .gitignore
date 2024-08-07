@@ -4,3 +4,5 @@ Apples*
 Grapes*
 __pycache__
 *.keras
+*.joblib
+leaffliction.joblib

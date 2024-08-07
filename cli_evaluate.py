@@ -1,7 +1,7 @@
 import os
 import sys
 import joblib
-from Train import soft_vote, hard_vote, print_accuracy
+from cli_train import soft_vote, hard_vote, print_accuracy
 
 from tensorflow.keras.utils import image_dataset_from_directory
 
@@ -29,7 +29,7 @@ def main():
             subset="both",
             shuffle=True,
             seed=42,
-            image_size=(128, 128),   # 4x less memory and time than (256,256)
+            image_size=(256, 256),   # 4x less memory and time than (256,256)
         )
         validation_data = data[1]
         data_acc = data[1]

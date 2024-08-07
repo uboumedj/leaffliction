@@ -3,8 +3,8 @@ import sys
 import random
 from datetime import datetime
 
-from Augmentation import augment
-from Distribution import getCountDictionary
+from data_augmentation import augment
+from data_distribution import getCountDictionary
 
 
 def help() -> None:

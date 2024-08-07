@@ -1,12 +1,12 @@
 import os
 import filetype
-import fnmatch
 from plantcv import plantcv as pcv
 from shutil import copytree
 import matplotlib.pyplot as plt
 import click
-from cli_transform import mask_image, transform_analysis, transform_gaussian_blur, find
+from cli_transform import mask_image, transform_analysis, transform_gaussian_blur
 from cli_transform import transform_masked, transform_pseudolandmarks, transform_roi
+from cli_transform import transform_directory
 
 
 def transform_image(img_path: str, dst: str, type: str) -> None:
@@ -61,32 +61,6 @@ def transform_image(img_path: str, dst: str, type: str) -> None:
         pcv.print_image(pseudo_img, new_image_prefix + "_PSEUDOLANDMARKS.JPG")
 
 
-def transform_directory(src: str, dst: str, type: str) -> None:
-    """
-    Performs image transformations on every image of a directory,
-    including images in sub-directories
-    Arguments:
-        src (string): path of directory where transformations will be applied
-        dst (string): directory where resulting images will be stored
-        type (string): type of transformation requested
-    """
-    file_count = 0
-    dir_content = os.listdir(src)
-    for filename in dir_content:
-        file_path = os.path.join(src, filename)
-        if os.path.isfile(file_path) and (filetype.guess(file_path) is not None
-           and filetype.guess(file_path).extension == 'jpg'):
-            transform_image(img_path=file_path, dst=dst, type=type)
-            file_count += 1
-            print(f"\rApplying {type} to {file_count}/{len(dir_content)}...",
-                  end='',
-                  flush=True)
-        elif os.path.isdir(file_path):
-            transform_directory(src=file_path, dst=dst, type=type)
-    if file_count > 0:
-        print(f"\nApplied {type} to {file_count} JPG files in {src}")
-
-
 @click.command()
 @click.option('--src', default=None, help='Directory of original data')
 @click.option('--dst', default=None, help="Directory of the transformed data")
@@ -95,7 +69,6 @@ def transform_directory(src: str, dst: str, type: str) -> None:
                    + " ['all', 'blur', 'mask', 'roi', 'analysis', "
                    + "'pseudolandmarks', 'maskblur']")
 def main(src, dst, type) -> None:
-    # Check if requested type is acceptable
     known_types = ['all', 'blur', 'mask', 'roi', 'analysis',
                    'pseudolandmarks', 'maskblur']
     if type not in known_types:
@@ -103,7 +76,6 @@ def main(src, dst, type) -> None:
         click.echo(ctx.get_help())
         print(f"Requested type '{type}' was not recognised")
         ctx.exit()
-    # Directory transformation
     if (src is not None and dst is not None and src != dst):
         if os.path.isdir(src) is False:
             return print(f"{src} does not exist or is not a directory")
@@ -121,7 +93,6 @@ def main(src, dst, type) -> None:
                         + f" can be found at {dst}\n")
         else:
             transform_directory(src=src, dst=src, type=type)
-    # Not enough arguments
     else:
         ctx = click.get_current_context()
         click.echo(ctx.get_help())

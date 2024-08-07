@@ -2,15 +2,12 @@ import os
 import sys
 import numpy as np
 import joblib
+import click
 import tensorflow as tf
 # from tensorflow.keras import layers, models, callbacks temporarily doesn't work ?
 from keras._tf_keras.keras import layers, models, callbacks
 # from tensorflow.keras.utils import image_dataset_from_directory temporarily doesn't work ?
 from keras._tf_keras.keras.utils import image_dataset_from_directory
-
-
-def help():
-    print("usage: python3 Train.py [folder of images]")
 
 
 def make_model(dataset):
@@ -100,26 +97,22 @@ def print_accuracy(data, ensemble_prediction, mode="soft"):
     return
 
 
-def main():
-    # argument
-    if len(sys.argv) != 2:
-        return help()
-    if os.path.isdir(sys.argv[1]) is False:
-        return print("Argument {} is not a directory".format(sys.argv[1]))
-
-    fruit = sys.argv[1].split('/', 1)[1]
-    print(fruit)
-    jl_name = os.path.join(sys.argv[1] + '.joblib')
+@click.command()
+@click.option('--data', default="./images", help='Directory of source data')
+def main(data):
+    if os.path.isdir(data) is False:
+        return print(f"Argument {data} is not a directory")
+    fruit = data.split('/', 1)[1]
+    jl_name = os.path.join(data + '.joblib')
     data_acc = None
     predictions_validation = []
-    subdirs = [elt for elt in os.listdir(sys.argv[1]) if fruit not in elt]
+    subdirs = [elt for elt in os.listdir(data) if fruit not in elt]
     subdirs = sorted(subdirs)
     models = [0] * len(subdirs)
-    print(subdirs)
     for i in range(len(subdirs)):
         print(f'Training {subdirs[i]} model')
         data = image_dataset_from_directory(
-            os.path.join(sys.argv[1], subdirs[i]),
+            os.path.join(data, subdirs[i]),
             validation_split=0.2,
             subset="both",
             shuffle=True,
@@ -139,7 +132,6 @@ def main():
             monitor="val_loss", patience=5, restore_best_weights=True
         )
 
-        # fit model
         model.fit(
             train_data,
             epochs=3,

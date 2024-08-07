@@ -4,18 +4,14 @@ import filetype
 import numpy as np
 import click
 from shutil import rmtree, copy
-import matplotlib.pyplot as plt
 import joblib
-
 from plantcv import plantcv as pcv
-
-from keras.preprocessing import image
-from PIL import Image
-
+# from tensforflow.keras.preprocessing import image temporarily doesn't work ?
+from keras._tf_keras.keras.preprocessing import image
 from cli_transform import transform_gaussian_blur, transform_masked
 from cli_transform import transform_roi, transform_analysis
 from cli_transform import transform_pseudolandmarks, find
-from cli_predict import plot_images, soft_vote, hard_vote
+from cli_predict import soft_vote, hard_vote
 
 
 def generate_transformed_images(image_path):

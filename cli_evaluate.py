@@ -3,7 +3,8 @@ import sys
 import joblib
 from cli_train import soft_vote, hard_vote, print_accuracy
 
-from tensorflow.keras.utils import image_dataset_from_directory
+# from tensorflow.keras.utils import image_dataset_from_directory temporarily doesn't work ?
+from keras._tf_keras.keras.utils import image_dataset_from_directory
 
 
 def main():

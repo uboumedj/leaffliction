@@ -2,15 +2,12 @@ import os
 import sys
 import filetype
 import numpy as np
-
 import matplotlib.pyplot as plt
 import joblib
-
 from plantcv import plantcv as pcv
-
-from keras.preprocessing import image
+# from keras.preprocessing import image temporrarily doesn't work ?
+from keras._tf_keras.keras.preprocessing import image
 from PIL import Image
-
 from cli_transform import transform_gaussian_blur, transform_masked
 from cli_transform import transform_roi, transform_analysis
 from cli_transform import transform_pseudolandmarks, find

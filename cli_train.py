@@ -1,12 +1,12 @@
 import os
 import sys
 import numpy as np
-
 import joblib
-
 import tensorflow as tf
-from tensorflow.keras import layers, models, callbacks
-from tensorflow.keras.utils import image_dataset_from_directory
+# from tensorflow.keras import layers, models, callbacks temporarily doesn't work ?
+from keras._tf_keras.keras import layers, models, callbacks
+# from tensorflow.keras.utils import image_dataset_from_directory temporarily doesn't work ?
+from keras._tf_keras.keras.utils import image_dataset_from_directory
 
 
 def help():
@@ -14,6 +14,14 @@ def help():
 
 
 def make_model(dataset):
+    """
+    Builds a tensorflow CNN model adapted to the dataset. Here you can change
+    the basic structure of the model used in this project
+    Arguments:
+        dataset (tf.data.Dataset object): the image dataset we want to train the model on
+    Returns:
+        A tensorflow model
+    """
     model = models.Sequential()
     model.add(layers.Rescaling(1.0 / 255))
     model.add(
@@ -21,7 +29,7 @@ def make_model(dataset):
             32,
             (3, 3),
             activation="relu",
-            input_shape=(128, 128, 1),
+            input_shape=(256, 256, 1)
         )
     )
     model.add(layers.MaxPooling2D((2, 2)))
@@ -110,27 +118,23 @@ def main():
     print(subdirs)
     for i in range(len(subdirs)):
         print(f'Training {subdirs[i]} model')
-        # data preprocessing
         data = image_dataset_from_directory(
             os.path.join(sys.argv[1], subdirs[i]),
-            validation_split=0.2,    # 0.8 for training, 0.2 for validation
+            validation_split=0.2,
             subset="both",
             shuffle=True,
             seed=42,
-            image_size=(128, 128),   # 4x less memory and time than (256,256)
+            image_size=(256, 256),
         )
         train_data = data[0]
         validation_data = data[1]
         data_acc = data[1]
 
-        # create model
         model = make_model(train_data)
 
-        # Create a learning rate scheduler callback.
         reduce_lr = callbacks.ReduceLROnPlateau(
             monitor="val_loss", factor=0.4, patience=5
         )
-        # Create an early stopping callback.
         early_stopping = callbacks.EarlyStopping(
             monitor="val_loss", patience=5, restore_best_weights=True
         )

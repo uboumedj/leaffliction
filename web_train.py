@@ -9,7 +9,8 @@ from cli_train import make_model, soft_vote, hard_vote, print_accuracy
 
 @click.command()
 @click.option('--data', default="./images", help='Directory of source data')
-def main(data):
+@click.option('--model_path', default="./leaffliction.joblib", help='Path to saved model')
+def main(data, model_path):
     """
     The web_train program trains a single CNN model on the whole dataset
     (Apples and Grapes) located inside a given directory. 
@@ -19,7 +20,7 @@ def main(data):
 
     # Data fetching and preprocessing
     print(f"Training model on dataset in {data}")
-    model_save_path = os.path.join('leaffliction.joblib')
+    model_full_path = os.path.join(model_path)
     data_acc = None
     predictions_validation = []
     subdirectories = [subdir for subdir in os.listdir(data)]
@@ -66,7 +67,7 @@ def main(data):
     print_accuracy(data_acc, hard_vote_predictions, "hard")
 
     # Model save
-    joblib.dump(model, model_save_path)
+    joblib.dump(model, model_full_path)
 
 
 if __name__ == "__main__":

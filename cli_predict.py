@@ -4,6 +4,7 @@ import filetype
 import numpy as np
 import matplotlib.pyplot as plt
 import joblib
+import click
 from plantcv import plantcv as pcv
 # from keras.preprocessing import image temporrarily doesn't work ?
 from keras._tf_keras.keras.preprocessing import image
@@ -11,10 +12,6 @@ from PIL import Image
 from cli_transform import transform_gaussian_blur, transform_masked
 from cli_transform import transform_roi, transform_analysis
 from cli_transform import transform_pseudolandmarks, find
-
-
-def help():
-    print("usage: python3 Predict.py [image_path]")
 
 
 def plot_images(path, fruit, class_pred):
@@ -185,36 +182,28 @@ def hard_vote(preds):
 
     return np.argmax(pred_array) % nb_classes
 
-def main():
-    # argument
-    if len(sys.argv) != 2:
-        return help()
-    if os.path.isfile(sys.argv[1]) is False:
-        return print("Argument {} is not a file".format(sys.argv[1]))
-    if (filetype.guess(sys.argv[1]) is None
-       or filetype.guess(sys.argv[1]).extension != 'jpg'):
-        return print(f"{sys.argv[1]} is not a jpeg image")
 
-    jl_name = sys.argv[1].split("/", 1)[0] + '.joblib'
-    path = find(jl_name, ".")
+@click.command()
+@click.option('--image', default=None, help='Path to the image to predict')
+@click.option('--model_path', default="leaffliction.joblib", help="Path to the trained model to use for prediction")
+def main(image, model_path):
+    if os.path.isfile(image) is False:
+        return print(f"Argument {image} is not a file")
+    if (filetype.guess(image) is None
+       or filetype.guess(image).extension != 'jpg'):
+        return print(f"{image} is not a jpeg image")
+
+    path = find(model_path, ".")
     if path is None:
-        return print(f'{jl_name} model not trained')
+        return print(f'{model_path} model has not been trained')
     models = joblib.load(filename=path)
 
-    fruit = sys.argv[1].split("/", 1)[0]
-    make_images(sys.argv[1], fruit)
+    fruit = image.split("/", 1)[0]
+    make_images(image, fruit)
 
     predictions = []
     transformations = sorted(os.listdir(os.path.dirname(path)+f'/{fruit}'))
     for i in range(len(models)):
-        if False and transformations[i]=="blur":
-            image_ = load_image(transformations[i], fruit)
-            conv2d_image = image_
-            images = []
-            for layer in models[i].layers[:3]:
-                conv2d_image = layer(conv2d_image)
-                images.append(conv2d_image)
-            print_image_summary(images, cols=3)
         prediction = models[i].predict(load_image(transformations[i], fruit))
         predictions.append(prediction[0])
 

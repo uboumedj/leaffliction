@@ -15,7 +15,9 @@
             Feel free to take a look at the <a href="/static/resources/leaffliction_subject.pdf" target="_blank" rel="noopener noreferrer">PDF file describing the project assignment</a> (PDF, 3.4Mb)
         </p>
     </div>
+
     <hr/>
+
     <h1>Data analysis</h1>
     <div class="plaintext">
         <p>
@@ -26,7 +28,7 @@
     <div class="dataset-sample">
         <div class="plant-card">
             <div class="plant-image-container">
-                <img class='plant-image' src="/static/resources/images/Apple_healthy/image (1).JPG" />
+                <img class='plant-image' src="/static/resources/images/Apple_healthy/image (1).JPG"  alt="Apple_healthy" />
             </div>
             <div class="plant-title">
                 <p>Apple_healthy</p>
@@ -34,7 +36,7 @@
         </div>
         <div class="plant-card">
             <div class="plant-image-container">
-                <img class='plant-image' src="/static/resources/images/Apple_Black_rot/image (12).JPG" />
+                <img class='plant-image' src="/static/resources/images/Apple_Black_rot/image (12).JPG" alt="Apple_Black_rot" />
             </div>
             <div class="plant-title">
                 <p>Apple_Black_rot</p>
@@ -42,7 +44,7 @@
         </div>
         <div class="plant-card">
             <div class="plant-image-container">
-                <img class='plant-image' src="/static/resources/images/Apple_scab/image (8).JPG" />
+                <img class='plant-image' src="/static/resources/images/Apple_scab/image (8).JPG" alt="Apple_scab" />
             </div>
             <div class="plant-title">
                 <p>Apple_scab</p>
@@ -50,7 +52,7 @@
         </div>
         <div class="plant-card">
             <div class="plant-image-container">
-                <img class='plant-image' src="/static/resources/images/Grape_Esca/image (10).JPG" />
+                <img class='plant-image' src="/static/resources/images/Grape_Esca/image (10).JPG" alt="Grape_Esca" />
             </div>
             <div class="plant-title">
                 <p>Grape_Esca</p>
@@ -58,7 +60,7 @@
         </div>
         <div class="plant-card">
             <div class="plant-image-container">
-                <img class='plant-image' src="/static/resources/images/Grape_spot/image (9).JPG" />
+                <img class='plant-image' src="/static/resources/images/Grape_spot/image (9).JPG" alt="Grape_spot" />
             </div>
             <div class="plant-title">
                 <p>Grape_spot</p>
@@ -66,7 +68,7 @@
         </div>
         <div class="plant-card">
             <div class="plant-image-container">
-                <img class='plant-image' src="/static/resources/images/Grape_Black_rot/image (19).JPG" />
+                <img class='plant-image' src="/static/resources/images/Grape_Black_rot/image (19).JPG" alt="Grape_Black_rot" />
             </div>
             <div class="plant-title">
                 <p>Grape_Black_rot</p>
@@ -78,8 +80,18 @@
             The dataset is very imbalanced, and a bit of <i>augmentation</i> and <i>transformation</i> was needed.
         </p>
     </div>
+    <div class="data-distribution-container">
+        <img class="data-distribution" src="/static/resources/data_distribution.png"  alt="Plots representing the data distribution"/>
+    </div>
+    <div class="plaintext">
+        <p>
+            The dataset was augmented where needed, first using <b>openCV</b>'s tools to apply random <i>rotations</i>, <i>flips</i>, and <i>projections</i> for example.<br/>
+            Then <b>plantCV</b>'s more specialised tools were used to augment the dataset even more, by applying transformations.
+        </p>
+    </div>
 
     <hr/>
+    
     <h1>Deep learning</h1>
     <div class="plaintext">
         <p>

@@ -51,6 +51,7 @@ def plot_dataset_classes(dataset_path: str):
 def main(dataset):
     if os.path.isdir(dataset) is False:
         return print(f"Argument {dataset} is not a directory")
+    plt.style.use('dark_background')
     dataset_path = os.path.join(dataset, '')
     plot_dataset_classes(dataset_path)
 

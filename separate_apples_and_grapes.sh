@@ -1,5 +1,6 @@
 # Once having the 'images' folder in root,
 # run this shell program to seperate Apples and Grapes leaves
+# This is used in the CLI process, that trains different models for different plant types
 
 rm -rf Grapes
 mkdir Grapes

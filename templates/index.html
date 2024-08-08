@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+    <form id="searchForm" method="post">
+        <input type="text" id="query" name="query" class="input-group__input" placeholder="Query" required>
+        <button type="submit" class="button">Search</button>
+    </form>
+
+    <script>
+        document.getElementById("searchForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var queryValue = document.getElementById("query").value;
+            window.location.href = "/results/" + encodeURIComponent(queryValue);
+        });
+    </script>
+</body>
+{% endblock %}

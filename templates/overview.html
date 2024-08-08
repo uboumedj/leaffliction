@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+    <h1>Brief summary</h1>
+    <div class="plaintext">
+        <p>
+            <b>Leaffliction</b> is a school project from school 42.<br/>
+
+            The goal of the project is to use multiple tools to <i>analyse</i>, <i>augment</i>, and <i>classify</i> a dataset comprised of <b>plant leaf images</b> with various diseases, using deep learning and computer vision techniques.<br/><br/>
+
+            This web page aims to present the results of the project in a clean manner<br/><br/>
+
+            The code for this whole project can be found on <a href="https://github.com/uboumedj/">my github</a>.<br/>
+
+            Feel free to take a look at the <a href="/static/resources/leaffliction_subject.pdf" target="_blank" rel="noopener noreferrer">PDF file describing the project assignment</a> (PDF, 3.4Mb)
+        </p>
+    </div>
+    <hr/>
+    <h1>Data analysis</h1>
+    <div class="plaintext">
+        <p>
+            The data for the project is a subset from <a href="https://www.kaggle.com/datasets/emmarex/plantdisease">Kaggle's PlantVillage dataset</a>.</br/>
+            More accurately, it only uses the <b>Apple</b> and <b>Grapes</b> disease data. Let's look at some examples.
+        </p>
+    </div>
+    <div class="dataset-sample">
+        <div class="plant-card">
+            <div class="plant-image-container">
+                <img class='plant-image' src="/static/resources/images/Apple_healthy/image (1).JPG" />
+            </div>
+            <div class="plant-title">
+                <p>Apple_healthy</p>
+            </div>
+        </div>
+        <div class="plant-card">
+            <div class="plant-image-container">
+                <img class='plant-image' src="/static/resources/images/Apple_Black_rot/image (12).JPG" />
+            </div>
+            <div class="plant-title">
+                <p>Apple_Black_rot</p>
+            </div>
+        </div>
+        <div class="plant-card">
+            <div class="plant-image-container">
+                <img class='plant-image' src="/static/resources/images/Apple_scab/image (8).JPG" />
+            </div>
+            <div class="plant-title">
+                <p>Apple_scab</p>
+            </div>
+        </div>
+        <div class="plant-card">
+            <div class="plant-image-container">
+                <img class='plant-image' src="/static/resources/images/Grape_Esca/image (10).JPG" />
+            </div>
+            <div class="plant-title">
+                <p>Grape_Esca</p>
+            </div>
+        </div>
+        <div class="plant-card">
+            <div class="plant-image-container">
+                <img class='plant-image' src="/static/resources/images/Grape_spot/image (9).JPG" />
+            </div>
+            <div class="plant-title">
+                <p>Grape_spot</p>
+            </div>
+        </div>
+        <div class="plant-card">
+            <div class="plant-image-container">
+                <img class='plant-image' src="/static/resources/images/Grape_Black_rot/image (19).JPG" />
+            </div>
+            <div class="plant-title">
+                <p>Grape_Black_rot</p>
+            </div>
+        </div>
+    </div>
+    <div class="plaintext">
+        <p>
+            The dataset is very imbalanced, and a bit of <i>augmentation</i> and <i>transformation</i> was needed.
+        </p>
+    </div>
+
+    <hr/>
+    <h1>Deep learning</h1>
+    <div class="plaintext">
+        <p>
+            We settled on a <a href="https://en.wikipedia.org/wiki/Convolutional_neural_network">CNN (Convolutional Neural Network)</a> to solve this project smoothly.<br/>
+            The model was built and trained with <b>Tensorflow</b>'s functions on the augmented dataset.<br/>
+            More precisely, the model's overall layer structure is as follows : <b>[ Conv2D | MaxPooling2D | ReLU | ReLU | Softmax ]</b>.<br/><br/>
+
+            The model was then saved and stored inside a <b>.joblib</b> file to be used both in further prediction/evaluation scenarios and on this website.<br/>
+
+            After training, the model manages a <b>90% accuracy rate</b> on validation sets!
+        </p>
+    </div>
+</body>
+{% endblock %}

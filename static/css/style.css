@@ -1,0 +1,90 @@
+body {
+    font-family: "Raleway", "Lato", sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #95fc8b 0%, #5e9c54 100%);
+    background-attachment: scroll;
+    background-size: cover;
+    color: #5c4033;
+  }
+
+h1 {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 0.7em;
+    padding-top: 1.5em;
+    color: #5c4033;
+  }
+
+.plaintext {
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 2%;
+    padding-bottom: 2%;
+  }
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    font-size: 100%;
+    color: #5c4033;
+    text-decoration: underline;
+
+    &:hover {
+        color: #5e9c54;
+    }
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    width: 50%;
+    background-image: linear-gradient(to right, transparent, #5c4033, transparent);
+}
+
+.plant-image {
+    transition: transform 0.7s ease;
+    &:hover{
+        transform: scale(1.4);
+        overflow: hidden;
+    }
+}
+
+.plant-image-container {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 256px;
+    height: 256px;
+    overflow: hidden;
+}
+
+.plant-title{
+    color: #093f01;
+}
+
+.plant-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #5c4033;
+    margin-right: 1%;
+    margin-left: 1%;
+    overflow: hidden;
+    position: relative;
+}
+
+.dataset-sample {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    padding-bottom: 2%;
+}

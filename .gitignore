@@ -1,7 +1,4 @@
-images*
-leaves*.zip
-Apples*
-Grapes*
+
 test
 __pycache__
 *.keras

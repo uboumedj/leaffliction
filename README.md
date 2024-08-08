@@ -34,7 +34,7 @@ transformations, and yield a single model that will be used for the web predicti
 * **matplotlib** and **seaborn** (*data visualisation*)
 * **numpy** (*data structure*)
 * **opencv** (*computer vision library*)
-* **plantcv** (*plant-specialised computer vision library, based on OpenCV)
+* **plantcv** (*plant-specialised computer vision library, based on OpenCV*)
 * **tensorflow** and **keras** (*deep learning models*)
 * **click** (*program argument parser*)
 * **pillow** (*image manipulation*)

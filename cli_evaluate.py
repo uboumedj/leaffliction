@@ -5,6 +5,7 @@ from cli_train import soft_vote, hard_vote, print_accuracy
 # from tensorflow.keras.utils import image_dataset_from_directory temporarily doesn't work ?
 from keras._tf_keras.keras.utils import image_dataset_from_directory
 
+
 @click.command()
 @click.option('--dataset', default=None, help='Path to the dataset on which evaluation is to be made')
 @click.option('--model_path', default="leaffliction.joblib", help="Path to the trained model to use for prediction")

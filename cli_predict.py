@@ -137,6 +137,7 @@ def load_image(type, fruit):
 
     return img_tensor
 
+
 def print_image_summary(images, cols=8):
     for i in range(len(images)):
         channels = images[i].shape[-1]
@@ -150,6 +151,7 @@ def print_image_summary(images, cols=8):
             plt.imshow(images_[:,:,i], cmap='gray')
         plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
+
 
 def soft_vote(predictions):
     """

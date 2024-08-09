@@ -1,4 +1,6 @@
-
+images
+images_copy
+images_copy_transformed
 test
 __pycache__
 *.keras

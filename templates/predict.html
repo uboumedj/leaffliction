@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+    <h1> {{ class }} </h1>
+    <div class="transformation-gallery">
+        {% for image in transformations %}
+        <div class="transformation-item">
+            <img src="static/tmp/{{ image }}" alt="static/tmp/{{ image }}">
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+
+{% endblock %}

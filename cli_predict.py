@@ -186,7 +186,7 @@ def hard_vote(preds):
 
 
 @click.command()
-@click.option('--image', default=None, help='Path to the image to predict')
+@click.option('--image', required=True, help='Path to the image to predict')
 @click.option('--model_path', default="leaffliction.joblib", help="Path to the trained model to use for prediction")
 def main(image, model_path):
     if os.path.isfile(image) is False:

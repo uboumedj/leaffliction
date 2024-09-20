@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
 <body>
-    <form id="searchForm" method="post">
-        <input type="text" id="query" name="query" class="input-group__input" placeholder="Query" required>
-        <button type="submit" class="button">Search</button>
-    </form>
+    <h1> Select an image to generate a prediction </h1>
+    <div class="gallery">
+        {% for image in images %}
+        <div class="gallery-item">
+            <form action="/predict" method="post" onsubmit="showLoading()">
+                <input type="hidden" name="image_path" value="{{ image }}">
+                <button type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
+                    <img src="{{ image }}" alt="{{ image }}">
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
 
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    
     <script>
-        document.getElementById("searchForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            var queryValue = document.getElementById("query").value;
-            window.location.href = "/results/" + encodeURIComponent(queryValue);
-        });
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
     </script>
 </body>
 {% endblock %}

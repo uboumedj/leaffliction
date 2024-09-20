@@ -14,27 +14,28 @@ from cli_transform import transform_pseudolandmarks, find
 from cli_predict import soft_vote, hard_vote
 
 
-def generate_transformed_images(image_path):
+def generate_transformed_images(image_path, destination="./tmp"):
     """
     Creates transformations of the original image for the predictions
     Arguments:
         image_path (str): path to the original image
+        destination (str): destination of temporary images
     """
-    if not os.path.exists("./tmp"):
-        os.makedirs("./tmp")
+    if not os.path.exists(destination):
+        os.makedirs(destination)
     img, path, filename = pcv.readimage(image_path)
 
     img_b = transform_gaussian_blur(img)
-    pcv.print_image(img_b, "./tmp/BLURRED.JPG")
+    pcv.print_image(img_b, f"{destination}/BLURRED.JPG")
     img_p = transform_pseudolandmarks(img)
-    pcv.print_image(img_p, "./tmp/PSEUDOLANDMARKS.JPG")
+    pcv.print_image(img_p, f"{destination}/PSEUDOLANDMARKS.JPG")
     img_m = transform_masked(img)
-    pcv.print_image(img_m, "./tmp/MASKED.JPG")
+    pcv.print_image(img_m, f"{destination}/MASKED.JPG")
     img_roi = transform_roi(img)
-    pcv.print_image(img_roi, "./tmp/ROI_OBJECTS.JPG")
+    pcv.print_image(img_roi, f"{destination}/ROI_OBJECTS.JPG")
     img_a = transform_analysis(img)
-    pcv.print_image(img_a, "./tmp/ANALYZED.JPG")
-    copy(image_path, "./tmp")
+    pcv.print_image(img_a, f"{destination}/ANALYZED.JPG")
+    copy(image_path, destination)
 
 
 def load_image(image_path):
@@ -56,7 +57,7 @@ def load_image(image_path):
 
 
 @click.command()
-@click.option('--image', default=None, help='Path to the image to predict')
+@click.option('--image', required=True, help='Path to the image to predict')
 @click.option('--model_path', default="leaffliction.joblib", help="Path to the trained model to use for prediction")
 def main(image, model_path):
     if os.path.isfile(image) is False:
